@@ -23,6 +23,9 @@ def raiblocks_account_validate(account):
 def raiblocks_mrai_from_raw(raw):
 	return int(math.floor(raw / (10 ** 30)))
 
+def raiblocks_mrai3_from_raw(raw):
+	return 0.001 * int(math.floor(raw / (10 ** 27)))
+
 def raiblocks_mrai_to_raw(mrai):
 	return int(math.floor(mrai * (10 ** 30)))
 
@@ -55,12 +58,14 @@ def raiblocks_balance_wallet():
 
 	accounts_balances = { "accounts": {}, "sum_balance_rai": 0, "sum_pending_rai": 0, "n_accounts": 0 }
 	ret2 = rai.account_list({"wallet": wallet});
+	print(ret2)
 
 	for account in ret2["accounts"]:
 		ret2 = rai.account_balance({"account": account})
+		print(ret2)
 		accounts_balances["accounts"][account] = {
-			'balance_rai': raiblocks_rai_from_raw(ret2["balance"]),
-			'pending_rai': raiblocks_rai_from_raw(ret2["pending"])
+			'balance_rai': raiblocks_rai_from_raw(int(ret2["balance"])),
+			'pending_rai': raiblocks_rai_from_raw(int(ret2["pending"]))
 		}
 
 		accounts_balances["sum_balance_rai"] += accounts_balances["accounts"][account]["balance_rai"]
@@ -145,3 +150,14 @@ def raiblocks_n_accounts(n):
 		i += 1
 
 	return accounts_created
+
+def raiblocks_account_balance(account):
+	global rai
+	print("balance for account,", account)
+	balance = rai.account_balance({"account": account})
+	print(balance)
+	bal2 = 0
+	if "balance" in balance:
+		bal2 = raiblocks_mrai3_from_raw(int(balance["balance"]))
+		print("balance:", bal2)
+	return bal2
