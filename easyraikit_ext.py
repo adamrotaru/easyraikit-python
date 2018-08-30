@@ -159,5 +159,7 @@ def raiblocks_account_balance(account):
 	bal2 = 0
 	if "balance" in balance:
 		bal2 = raiblocks_mrai3_from_raw(int(balance["balance"]))
-		print("balance:", bal2)
+		print("balance (rounded):", bal2)
 	return bal2
+
+
