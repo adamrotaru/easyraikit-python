@@ -161,5 +161,3 @@ def raiblocks_account_balance(account):
 		bal2 = raiblocks_mrai3_from_raw(int(balance["balance"]))
 		print("balance (rounded):", bal2)
 	return bal2
-
-
